@@ -21,7 +21,7 @@ const LoadComponent = () => {
         <div className='background-container' style={{ backgroundImage: `url(${randomImage})` }}>   
             <div className='overlay'></div>
             <div className="button-container">
-                <button className="button">Pear</button>
+                <button className="button">Pears</button>
                 <button className="button">Apple</button>
             </div>
         </div>
