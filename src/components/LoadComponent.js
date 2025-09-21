@@ -23,7 +23,7 @@ const LoadComponent = () => {
         apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
         projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID
     });
-    
+
     console.log('Random Image:', randomImage);
 
     // Function to save feedback to Firestore
@@ -49,7 +49,7 @@ const LoadComponent = () => {
         // Save feedback to Firestore
         saveFeedbackToFirestore(randomImage.src, selectedLabel);
         alert(`You selected "${selectedLabel}" for the image.`);
-        // window.location.reload(); // Reload to show a new random image
+        window.location.reload(); // Reload to show a new random image
     }
 
     useEffect(() => {
