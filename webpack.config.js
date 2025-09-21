@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: './src/index.js',
@@ -10,6 +12,7 @@ module.exports = {
         publicPath: '/'
     },
     plugins:[
+        new Dotenv(),
         new HtmlWebpackPlugin({
             template: './public/index.html', //Correct path to the index.html file
             filename: 'index.html'
@@ -17,7 +20,8 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: './public/manifest.json', to: 'manifest.json' }, // Copy manifest.json
-                { from: './public/service-worker.js', to: 'service-worker.js' } // Copy service-worker.js
+                { from: './public/service-worker.js', to: 'service-worker.js' }, // Copy service-worker.js
+                { from: './public/images', to: 'images' } // Copy images folder
             ]
         })
     ],
@@ -46,5 +50,8 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js']
-    }
+    },
+    // Other Webpack configuration...
+    devtool: false, // Disable source maps
+    // ...
 };
