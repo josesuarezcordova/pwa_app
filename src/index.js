@@ -5,9 +5,22 @@ import './styles/App.css';
 import LoadComponent from './components/LoadComponent';
 
 
-console.log('Checking Registering service worker...');
+const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/+$/, ''); // Remove trailing slash
+console.log('PUBLIC_URL======>', publicUrl);
+
+// Unregister any existing service workers (for debugging purposes)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => registration.unregister());
+  });
+}
+
+const serviceWorkerPath = `${publicUrl}/service-worker.js`;
+console.log('Service Worker Path:', serviceWorkerPath);
+
+// Register the service worker for PWA functionality
 if('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
+  navigator.serviceWorker.register(serviceWorkerPath)
     .then((registration) => {
         console.log('Service Worker registered with scope:', registration.scope);
     })

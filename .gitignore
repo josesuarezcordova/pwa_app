@@ -20,6 +20,8 @@ Thumbs.db
 
 # Environment variables
 .env
+.env.development
+.env.production
 
 # Cache files
 .cache/

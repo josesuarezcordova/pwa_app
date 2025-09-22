@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "A Progressive Web App project",
   "main": "src/index.js",
+  "homepage": "https://josesuarezcordova.github.io/pwa_app/",
   "scripts": {
-    "start": "webpack serve --mode development",
-    "build": "webpack --mode production",
+    "start": "webpack serve --env development",
+    "build": "webpack --env production",
     "lint": "eslint src/**/*.js"
   },
   "keywords": [
@@ -17,6 +18,8 @@
   "author": "Jsuarez",
   "license": "MIT",
   "dependencies": {
+    "@tensorflow-models/mobilenet": "^2.1.1",
+    "@tensorflow/tfjs": "^4.22.0",
     "firebase": "^12.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

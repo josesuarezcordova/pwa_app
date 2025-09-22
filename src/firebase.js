@@ -11,6 +11,11 @@ console.log("Firebase Config=====>", {
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 });
 
+
+console.log('####Environment Variables:####', process.env);
+
+
+
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -21,6 +26,11 @@ const firebaseConfig = {
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+export { db };
+
 //    apiKey: "AIzaSyBAVI_TXFjdCCwQW7KiuuXNA4__jR5HrsY",
 //    authDomain: "pwafruitml.firebaseapp.com",
 //    projectId: "pwafruitml",
@@ -28,8 +38,3 @@ const firebaseConfig = {
 //    messagingSenderId: "989330511393",
 //    appId: "1:989330511393:web:e6d7337252d7a4eaa9b560",
 //    measurementId: "G-34W3RKLP4Q"
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-export { db };
