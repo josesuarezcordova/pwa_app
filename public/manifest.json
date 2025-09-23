@@ -1,11 +1,11 @@
 {
   "name": "My PWA Project + ML",
   "short_name": "PWA",
-  "start_url": "/",
+  "start_url": "/pwa_app/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
-  "description": "A Progressive Web App project to gather data and Train a ML model.",
+  "description": "A Progressive Web App designed to gather labeled data for AI training.",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
