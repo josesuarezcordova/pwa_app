@@ -90,7 +90,7 @@ const LoadComponent = () => {
             setIsLoading(true); // Show loading state
            // Wait for the feedback to be saved to Firestore before reloading
            await saveFeedbackToFirestore(currentImage.src, selectedLabel);
-           setModalMessage(`You labelled as "${selectedLabel}" the image.`);
+           setModalMessage(`You labelled the image as "${selectedLabel}"`);
            setIsModalOpen(true); // Open the modal
         } catch (error) {
             console.error('Error handling selection:', error.message, error);
@@ -110,7 +110,12 @@ const LoadComponent = () => {
     }, []);
     return (
         <div className="background-container">
-            <h1 className='title'>Help Us Teach the AI</h1>
+            <div class="header">
+                <h1 className='title'>I want to learn</h1>
+            </div>
+            <div class="subTitle">
+                <h2>What is this</h2>
+            </div>
             <div className="image-container">
                 {/* <img src={randomImage.src} alt="Random" />
                  */}
@@ -134,8 +139,8 @@ const LoadComponent = () => {
             <div className="modal">
                 <div className="modal-content">
                     <p>{modalMessage}</p>
-                    <p>Total labels Submitted: {feedbackCount}</p>
                     <button className='button' onClick={closeModal}>Ok</button>
+                    <p className="smallFont">Total labels Submitted: {feedbackCount}</p>                    
                 </div>
             </div>
         )}   
