@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles/LoadComponent.css';
-import {collection, addDoc, doc } from 'firebase/firestore';
+import {collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
@@ -20,9 +20,15 @@ const extractImageFeatures = async (imageSrc) => {
 }
 
 const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/+$/, ''); // Remove trailing slash
-console.log('PUBLIC_URL:', publicUrl);
 
 const LoadComponent = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [feedbackCount, setFeedbackCount] = useState(0);
+    const [modalMessage, setModalMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [currentImage, setCurrentImage] = useState(null);
+    
+    // Array of image paths
     const images = [
         { src: `${publicUrl}/images/image1.png` },
         { src: `${publicUrl}/images/image2.png` },
@@ -36,17 +42,20 @@ const LoadComponent = () => {
         { src: `${publicUrl}/images/image10.png` },
     ];
 
-    const randomImage = images[Math.floor(Math.random() * images.length)];
-        
-    console.log('Random Image:', randomImage);
+    const getRandomImage = () => {
+        return images[Math.floor(Math.random() * images.length)];
+    };
+
+     // Initialize the current image when the component mounts
+     useEffect(() => {
+        setCurrentImage(getRandomImage());
+        testFirestoreConnection();
+    }, []);
 
     // Function to save feedback to Firestore
-    const saveFeedbackToFirestore = async (image, userLabel, correctLabel) => {
+    const saveFeedbackToFirestore = async (image, userLabel) => {
         try {
-            console.log('Starting to save feedback...');
-            console.log('Image:', image);
-            console.log('User Label:', userLabel);
-
+            
             // Extract image features
             const imageFeatures = await extractImageFeatures(image);
             console.log('Extracted Image Features:', imageFeatures);
@@ -63,6 +72,11 @@ const LoadComponent = () => {
             };
             console.log('Saving feedback to Firestore:', feedback);
             const docRef = await addDoc(collection(db, 'feedback'), feedback);
+            
+            //Fetch the total feedback count
+            const feedbackSnapshot = await getDocs(collection(db, 'feedback'));
+            setFeedbackCount(feedbackSnapshot.size);
+
             console.log('Feedback saved with ID:', docRef.id);
             
         }catch (error) {
@@ -73,13 +87,22 @@ const LoadComponent = () => {
     //Handle user selection
     const handleSelection = async(selectedLabel) => {
         try{
+            setIsLoading(true); // Show loading state
            // Wait for the feedback to be saved to Firestore before reloading
-           await saveFeedbackToFirestore(randomImage.src, selectedLabel);
-           alert(`You selected "${selectedLabel}" for the image.`);
-           window.location.reload(); // Reload to show a new random image
+           await saveFeedbackToFirestore(currentImage.src, selectedLabel);
+           setModalMessage(`You labelled as "${selectedLabel}" the image.`);
+           setIsModalOpen(true); // Open the modal
         } catch (error) {
             console.error('Error handling selection:', error.message, error);
+        } finally {
+            setIsLoading(false); // Hide loading state
         }        
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        // Reload the page to show a new random image
+        setCurrentImage(getRandomImage()); //Update the image after closing the modal
     }
 
     useEffect(() => {
@@ -89,13 +112,34 @@ const LoadComponent = () => {
         <div className="background-container">
             <h1 className='title'>Help Us Teach the AI</h1>
             <div className="image-container">
-                <img src={randomImage.src} alt="Random" />
+                {/* <img src={randomImage.src} alt="Random" />
+                 */}
+                 {currentImage && <img src={currentImage.src} alt="Random" />}
             </div>
             <div className="button-container">
-            <button className="button" onClick={()=> handleSelection('pear')}>Pears</button>
-            <button className="button" onClick={()=> handleSelection('apple')}>Apple</button>
+                <button className="button" onClick={()=> handleSelection('pear')} disabled={isLoading}>Pears</button>
+                <button className="button" onClick={()=> handleSelection('apple')} disabled={isLoading}>Apple</button>
             </div>
-        </div>        
+
+        {/* Loading animation */}
+        {isLoading && (
+            <div className="loading-overlay">
+                <div className="loading-spinner"></div>
+                <p>Saving...</p>
+            </div>
+        )}
+        
+        {/* Modal for feedback confirmation */}
+        {isModalOpen && (
+            <div className="modal">
+                <div className="modal-content">
+                    <p>{modalMessage}</p>
+                    <p>Total labels Submitted: {feedbackCount}</p>
+                    <button className='button' onClick={closeModal}>Ok</button>
+                </div>
+            </div>
+        )}   
+         </div>                              
     );
 };
 
