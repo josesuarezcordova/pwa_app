@@ -1,10 +1,49 @@
 .background-container {
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    background-color: #ffffff; /* Set background color to white */
+    display: flex; /* Enable flexbox for layout */
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
     position: relative;
-    width: 100vw;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    padding: 20px; /* Add some padding around the container */
+    box-sizing: border-box; /* Include padding in width/height calculations */
+}
+
+.title {
+    font-size: 2rem; /* Large font size for the title */
+    font-weight: bold;
+    color: #333; /* Dark text color */
+    margin-bottom: 20px; /* Add space below the title */
+    text-align: center; /* Center the title text */
+}
+
+.image-container img {
+    max-width: 90%; /* Ensure the image doesn't exceed 90% of the viewport width */
+    max-height: 60vh; /* Ensure the image doesn't exceed 60% of the viewport height */
+    object-fit: contain; /* Ensure the entire image is visible */
+    margin-bottom: 20px; /* Add space below the image */
+}
+
+.button-container {
+    display: flex;
+    gap: 20px; /* Add spacing between buttons */
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+.button:hover {
+    background-color: #f0f0f0;
 }
 
 .overlay {
@@ -13,38 +52,29 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.1); /* White background with transparency */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 1; /* Ensure it appears above the background */
 }
 
 .button-container {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
+    z-index: 2; /* Ensure buttons appear above the overlay */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    gap: 20px; /* Add spacing between buttons */
 }
 
 .button{
-    width: 50%;
-    padding: 15px 30px;
-    font-size: 1rem;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #333;
-    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
     border: none;
     border-radius: 5px;
+    background-color: #ffffff;
+    color: #333;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    text-align: center;
 }
 
 .button:hover {
-    background-color: #555;
+    background-color: #f0f0f0;
 }
 
 h1 {

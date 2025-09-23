@@ -86,13 +86,16 @@ const LoadComponent = () => {
         testFirestoreConnection();
     }, []);
     return (
-        <div className='background-container' style={{ backgroundImage: `url(${randomImage.src})` }}>   
-            <div className='overlay'></div>
-            <div className="button-container">
-                <button className="button" onClick={()=> handleSelection('pear')}>Pears</button>
-                <button className="button" onClick={()=> handleSelection('apple')}>Apple</button>
+        <div className="background-container">
+            <h1 className='title'>Help Us Teach the AI</h1>
+            <div className="image-container">
+                <img src={randomImage.src} alt="Random" />
             </div>
-        </div>
+            <div className="button-container">
+            <button className="button" onClick={()=> handleSelection('pear')}>Pears</button>
+            <button className="button" onClick={()=> handleSelection('apple')}>Apple</button>
+            </div>
+        </div>        
     );
 };
 
