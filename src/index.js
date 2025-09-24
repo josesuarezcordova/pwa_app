@@ -6,7 +6,6 @@ import LoadComponent from './components/LoadComponent';
 
 
 const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/+$/, ''); // Remove trailing slash
-console.log('PUBLIC_URL======>', publicUrl);
 
 // Unregister any existing service workers (for debugging purposes)
 if ('serviceWorker' in navigator) {

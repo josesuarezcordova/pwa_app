@@ -21,6 +21,26 @@ const extractImageFeatures = async (imageSrc) => {
 
 const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/+$/, ''); // Remove trailing slash
 
+const getSessionId = () => {
+    let sessionId = localStorage.getItem('sessionId');
+    if (!sessionId) {
+        sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        localStorage.setItem('sessionId', sessionId);
+    }
+    return sessionId;
+}
+
+const incrementFeedbackCount = () => {
+  let feedbackCount = parseInt(localStorage.getItem('feedbackCount'), 10) || 0;
+  feedbackCount += 1;
+  localStorage.setItem('feedbackCount', feedbackCount);
+  return feedbackCount;
+};
+
+const getFeedbackCount = () => {
+  return parseInt(localStorage.getItem('feedbackCount'), 10) || 0;
+};
+
 const LoadComponent = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [feedbackCount, setFeedbackCount] = useState(0);
@@ -56,6 +76,9 @@ const LoadComponent = () => {
     const saveFeedbackToFirestore = async (image, userLabel) => {
         try {
             
+            const sessionId = getSessionId(); // Get the current session ID
+            const feedbackCount = incrementFeedbackCount(); // Increment feedback count
+
             // Extract image features
             const imageFeatures = await extractImageFeatures(image);
             console.log('Extracted Image Features:', imageFeatures);
@@ -69,6 +92,9 @@ const LoadComponent = () => {
                 userLabel, // Label selected by the user
                 features: flattenedFeatures, // Extracted image features
                 timestamp: new Date().toISOString(),
+                sessionId, // Include session ID
+                feedbackCount, // Include feedback count for the session
+
             };
             console.log('Saving feedback to Firestore:', feedback);
             const docRef = await addDoc(collection(db, 'feedback'), feedback);
@@ -105,6 +131,8 @@ const LoadComponent = () => {
         setCurrentImage(getRandomImage()); //Update the image after closing the modal
     }
 
+    const n = getFeedbackCount();
+
     useEffect(() => {
         testFirestoreConnection();
     }, []);
@@ -121,8 +149,9 @@ const LoadComponent = () => {
                  */}
                  {currentImage && <img src={currentImage.src} alt="Random" />}
             </div>
+            <p className="smallFont">You've labelled {getFeedbackCount()} images</p>
             <div className="button-container">
-                <button className="button" onClick={()=> handleSelection('pear')} disabled={isLoading}>Pears</button>
+                <button className="button" onClick={()=> handleSelection('pear')} disabled={isLoading}>Pear</button>
                 <button className="button" onClick={()=> handleSelection('apple')} disabled={isLoading}>Apple</button>
             </div>
 
@@ -135,12 +164,25 @@ const LoadComponent = () => {
         )}
         
         {/* Modal for feedback confirmation */}
+        
         {isModalOpen && (
             <div className="modal">
                 <div className="modal-content">
-                    <p>{modalMessage}</p>
+                    {(n==10) ? (
+                        <div className="subTitle">
+                            <h3>You labelled {n} images</h3>
+                            <h3>Great job!</h3>
+                            {/* Trophy icon */}
+                            <div className='award'>
+                                <span role="img" aria-label="trophy" style={{fontSize: '48px'}}>🏆</span>
+                                <p className='smallFont'>You have earned a trophy!</p>
+                            </div>
+                        </div>
+                    ) : (
+                        <p>{modalMessage}</p>
+                    )}                    
                     <button className='button' onClick={closeModal}>Ok</button>
-                    <p className="smallFont">Total labels Submitted: {feedbackCount}</p>                    
+                    <p className="smallFont">Total labels Submitted: {feedbackCount}</p>             
                 </div>
             </div>
         )}   
