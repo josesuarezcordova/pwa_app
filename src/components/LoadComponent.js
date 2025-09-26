@@ -16,6 +16,9 @@ const extractImageFeatures = async (imageSrc) => {
     });
     const model = await mobilenet.load();
     const features = model.infer(img, true); // 'true' returns the intermediate activation activations
+    
+    const normalizedFeatures = features.arraySync().map(f => f / Math.max(...features.arraySync())); // Normalize the features
+
     return features.arraySync(); // Convert tensor to array
 }
 

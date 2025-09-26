@@ -15,7 +15,6 @@ console.log("Firebase Config=====>", {
 console.log('####Environment Variables:####', process.env);
 
 
-
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
