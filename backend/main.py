@@ -1,9 +1,10 @@
-from load_data import load_data
-from clean_data import clean_data
-from preprocess_data import preprocess_data
-from split_data import split_data
-from train_model import train_model
-from evaluate_model import evaluate_model
+from scripts.load_data import load_data
+from scripts.clean_data import clean_data
+from scripts.preprocess_data import preprocess_data
+from scripts.split_data import split_data
+from scripts.train_model import train_model
+from scripts.evaluate_model import evaluate_model
+
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
 import joblib
@@ -11,7 +12,7 @@ from collections import Counter
 from sklearn.metrics import classification_report, confusion_matrix
 
 # Load data
-data = load_data('feedbackData.json')
+data = load_data('data/feedbackData.json')
 
 # Clean data
 cleaned_data = clean_data(data)
@@ -40,7 +41,7 @@ print("Any NaN in y_train:", np.isnan(y_train).any())
 # Train model
 clf = train_model(X_train, y_train)
 
-joblib.dump(clf, 'feedback_model.pkl')
+joblib.dump(clf, 'models/feedback_model.pkl')
 
 # Encode labels and save the encoder
 labels = [record["userLabel"] for record in cleaned_data]
@@ -48,7 +49,7 @@ encoder = LabelEncoder()
 encoded_labels = encoder.fit_transform(labels)
 
 # Save the LabelEncoder
-joblib.dump(encoder, "label_encoder.pkl")
+joblib.dump(encoder, "models/label_encoder.pkl")
 
 # Count the occurrences of each label
 label_counts = Counter(labels)

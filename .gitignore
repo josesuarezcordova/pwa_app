@@ -25,3 +25,19 @@ Thumbs.db
 
 # Cache files
 .cache/
+
+# Standalone Scripts
+exportData.js
+
+# Ignore data files
+data/feedbackData.json
+data/new_features.json
+
+# Ignore model files (optional)
+models/feedback_model.pkl
+models/label_encoder.pkl
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
