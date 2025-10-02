@@ -8,7 +8,7 @@ module.exports = (env) => {
 
     const isProduction = env.production; // Check if the build is for production
     const publicPath = env.production ? '/pwa_app/' : '/';
-    
+
     return{
         mode: isProduction ? 'production' : 'development',
         entry: './src/index.js',
@@ -58,6 +58,7 @@ module.exports = (env) => {
             compress: true,
             port: 9000,
             historyApiFallback: true,
+            open: true,
             headers:{
                 'Access-Control-Allow-Origin': '*', //Add CORS headers
             }

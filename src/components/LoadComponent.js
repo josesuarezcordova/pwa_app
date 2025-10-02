@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './styles/LoadComponent.css';
+// import { useNavigate } from 'react-router-dom';
 import {collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 // Function to extract image features using MobileNet
 const extractImageFeatures = async (imageSrc) => {
@@ -25,13 +28,27 @@ const extractImageFeatures = async (imageSrc) => {
 const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/+$/, ''); // Remove trailing slash
 
 const getSessionId = () => {
+    const SESSION_EXPIRATION_DAYS = 7; // Session expiration in days
+    const now = new Date();
+
     let sessionId = localStorage.getItem('sessionId');
-    if (!sessionId) {
-        sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        localStorage.setItem('sessionId', sessionId);
+    let sessionTimestamp = parseInt(localStorage.getItem('sessionTimestamp'), 10);
+
+    if(sessionId && sessionTimestamp) {
+        const elapsedTime = now - sessionTimestamp;
+        const expirationTime = SESSION_EXPIRATION_DAYS * 24 * 60 * 60 * 1000; // Convert days to milliseconds
+
+        if(elapsedTime < expirationTime) {
+            return sessionId; // Return existing session ID if not expired
+        }
     }
+
+    // If no valid session, create a new one
+    sessionId = `session_${now.getTime()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem('sessionId', sessionId);
+    localStorage.setItem('sessionTimestamp', now.getTime().toString());
     return sessionId;
-}
+};
 
 const incrementFeedbackCount = () => {
   let feedbackCount = parseInt(localStorage.getItem('feedbackCount'), 10) || 0;
@@ -45,6 +62,14 @@ const getFeedbackCount = () => {
 };
 
 const LoadComponent = () => {
+    // const navigate = useNavigate(); // Initialize the navigate function
+
+    // const handleNavigateToPredict = () => {
+    //     navigate('/predict'); // Navigate to the PredictionComponent
+    // };
+    const location = useLocation();
+    console.log('Current location:', location.pathname);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [feedbackCount, setFeedbackCount] = useState(0);
     const [modalMessage, setModalMessage] = useState('');
@@ -53,16 +78,20 @@ const LoadComponent = () => {
     
     // Array of image paths
     const images = [
-        { src: `${publicUrl}/images/image1.png` },
-        { src: `${publicUrl}/images/image2.png` },
-        { src: `${publicUrl}/images/image3.png` },
-        { src: `${publicUrl}/images/image4.png` },
-        { src: `${publicUrl}/images/image5.png` },
-        { src: `${publicUrl}/images/image6.png` },
-        { src: `${publicUrl}/images/image7.png` },
-        { src: `${publicUrl}/images/image8.png` },
-        { src: `${publicUrl}/images/image9.png` },
-        { src: `${publicUrl}/images/image10.png` },
+        { src: `${publicUrl}/images/train/image1.png` },
+        { src: `${publicUrl}/images/train/image2.png` },
+        { src: `${publicUrl}/images/train/image3.png` },
+        { src: `${publicUrl}/images/train/image4.png` },
+        { src: `${publicUrl}/images/train/image5.png` },
+        { src: `${publicUrl}/images/train/image6.png` },
+        { src: `${publicUrl}/images/train/image7.png` },
+        { src: `${publicUrl}/images/train/image8.png` },
+        { src: `${publicUrl}/images/train/image9.png` },
+        { src: `${publicUrl}/images/train/image10.png` },
+        { src: `${publicUrl}/images/train/image11.png` },
+        { src: `${publicUrl}/images/train/image12.png` },
+        { src: `${publicUrl}/images/train/image13.png` },
+        { src: `${publicUrl}/images/train/image14.png` },
     ];
 
     const getRandomImage = () => {
@@ -113,13 +142,41 @@ const LoadComponent = () => {
         }
     };
 
+    // Get the current feedback count
+    const n = getFeedbackCount();
+
+    const incrementPoints = () => {
+        let points = parseInt(localStorage.getItem('points'), 10) || 0;
+        const feedbackCount = getFeedbackCount();
+        
+        if (feedbackCount % 10 === 0) {
+            points += 10; // Award 10 points for every 10 images labelled
+            localStorage.setItem('points', points);
+        }
+        return points;
+    };
+
+    const getPoints = () => {
+        return parseInt(localStorage.getItem('points'), 10) || 0;
+    };
+
     //Handle user selection
     const handleSelection = async(selectedLabel) => {
         try{
             setIsLoading(true); // Show loading state
            // Wait for the feedback to be saved to Firestore before reloading
            await saveFeedbackToFirestore(currentImage.src, selectedLabel);
-           setModalMessage(`You labelled the image as "${selectedLabel}"`);
+           
+           const points = incrementPoints(); // Increment points if applicable
+           
+           if(getFeedbackCount() % 10 === 0) {
+            // Show special message for every 10 images labelled
+            setModalMessage(`You labelled ${getFeedbackCount()} images and earned 10 points! Total Points: ${points}`);
+           } else {
+            // Regular message
+            setModalMessage(`You labelled the image as "${selectedLabel}". Good job!`);
+           }
+
            setIsModalOpen(true); // Open the modal
         } catch (error) {
             console.error('Error handling selection:', error.message, error);
@@ -134,29 +191,31 @@ const LoadComponent = () => {
         setCurrentImage(getRandomImage()); //Update the image after closing the modal
     }
 
-    const n = getFeedbackCount();
-
+    // Test Firestore connection on component mount
     useEffect(() => {
         testFirestoreConnection();
     }, []);
+
     return (
         <div className="background-container">
-            <div class="header">
+            <div className="header">
                 <h1 className='title'>I want to learn</h1>
             </div>
-            <div class="subTitle">
+            <div className="subTitle">
                 <h2>What is this</h2>
             </div>
             <div className="image-container">
-                {/* <img src={randomImage.src} alt="Random" />
-                 */}
-                 {currentImage && <img src={currentImage.src} alt="Random" />}
+                {currentImage && <img src={currentImage.src} alt="Random" />}
             </div>
-            <p className="smallFont">You've labelled {getFeedbackCount()} images</p>
-            <div className="button-container">
-                <button className="button" onClick={()=> handleSelection('pear')} disabled={isLoading}>Pear</button>
-                <button className="button" onClick={()=> handleSelection('apple')} disabled={isLoading}>Apple</button>
-            </div>
+            <div className="actions">
+                <div className="button-container">
+                    <button className="button" onClick={() => handleSelection('pear')} disabled={isLoading}>Pear</button>
+                    <button className="button" onClick={() => handleSelection('apple')} disabled={isLoading}>Apple</button>
+                </div>
+                <div className="button-container button-container--full">
+                    <Link to="/predict" className="button button-test-background button-fullwidth">Test me</Link>
+                </div>
+            </div>     
 
         {/* Loading animation */}
         {isLoading && (
@@ -171,21 +230,23 @@ const LoadComponent = () => {
         {isModalOpen && (
             <div className="modal">
                 <div className="modal-content">
-                    {(n==10) ? (
+                    {(n % 10 === 0) ? (
                         <div className="subTitle">
                             <h3>You labelled {n} images</h3>
                             <h3>Great job!</h3>
                             {/* Trophy icon */}
                             <div className='award'>
                                 <span role="img" aria-label="trophy" style={{fontSize: '48px'}}>🏆</span>
-                                <p className='smallFont'>You have earned a trophy!</p>
+                                <p className="smallFont">You've labelled {getFeedbackCount()} images</p>
+                                <p className="smallFont">Total Points: {getPoints()}</p>
                             </div>
                         </div>
                     ) : (
                         <p>{modalMessage}</p>
                     )}                    
                     <button className='button' onClick={closeModal}>Ok</button>
-                    <p className="smallFont">Total labels Submitted: {feedbackCount}</p>             
+                    <p className="smallFont">You've labelled {getFeedbackCount()} images</p>
+                    <p className="smallFont italics">Total labels Submitted: {feedbackCount}</p>             
                 </div>
             </div>
         )}   

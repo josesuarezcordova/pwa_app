@@ -11,6 +11,7 @@ self.addEventListener('install', (event) => {
                 '/src/index.js',
                 '/src/App.js',
                 '/src/components/LoadComponent.js',
+                '/src/components/PredictionComponent.js',
             ]);
         })
     );

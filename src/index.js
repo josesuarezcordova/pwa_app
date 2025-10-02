@@ -36,6 +36,7 @@ const rootElement = document.getElementById('root');
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <LoadComponent />
-  </React.StrictMode>
+      <App />
+  </React.StrictMode>,
+  document.getElementById('root')
 );

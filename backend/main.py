@@ -10,6 +10,12 @@ import numpy as np
 import joblib
 from collections import Counter
 from sklearn.metrics import classification_report, confusion_matrix
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+MODELS_DIR = BASE_DIR / "models"
+MODELS_DIR.mkdir(parents=True, exist_ok=True)
+
 
 # Load data
 data = load_data('data/feedbackData.json')
@@ -41,15 +47,24 @@ print("Any NaN in y_train:", np.isnan(y_train).any())
 # Train model
 clf = train_model(X_train, y_train)
 
-joblib.dump(clf, 'models/feedback_model.pkl')
+joblib.dump(clf, MODELS_DIR / 'feedback_model.pkl')
+print("Saved model to:", MODELS_DIR / "feedback_model.pkl")
 
 # Encode labels and save the encoder
 labels = [record["userLabel"] for record in cleaned_data]
 encoder = LabelEncoder()
 encoded_labels = encoder.fit_transform(labels)
 
+# IMPORTANT: save the SAME encoder produced by preprocess_data
+# Remove the re-fit block to avoid mismatches:
+# labels = [record["userLabel"] for record in cleaned_data]
+# encoder = LabelEncoder()
+# encoded_labels = encoder.fit_transform(labels)
+
 # Save the LabelEncoder
-joblib.dump(encoder, "models/label_encoder.pkl")
+joblib.dump(encoder, MODELS_DIR / "label_encoder.pkl")
+print("Saved encoder to:", MODELS_DIR / "label_encoder.pkl")
+print("Encoder classes:", list(encoder.classes_))
 
 # Count the occurrences of each label
 label_counts = Counter(labels)

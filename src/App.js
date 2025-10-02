@@ -1,13 +1,17 @@
 import React from 'react';
 import './styles/App.css';
-import ExampleComponent from './components/LoadComponent';
+import { BrowserRouter as Router, Routes, Route, Link  } from 'react-router-dom';
+import LoadComponent from './components/LoadComponent';
+import PredictionComponent from './components/PredictionComponent';
 
 function App() {
     return (
-        <div className="App">
-            <h1>Welcome to My PWA</h1>
-            <ExampleComponent />
-        </div>
+        <Router>            
+            <Routes>
+                <Route path="/" element={<LoadComponent />} />
+                <Route path="/predict" element={<PredictionComponent />} />
+            </Routes>             
+        </Router>
     );
 }
 

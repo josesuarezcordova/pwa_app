@@ -50,14 +50,13 @@
 .background-container {
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(to bottom, #FFD700, #FFA500); /* Yellow to Orange gradient */
-    background-image: url('https://www.transparenttextures.com/patterns/soft-circle-scales.png'); /* Add a fun pattern */
+    background: #fcfcfb; /* Light background color */
+    /* background-image: url('https://www.transparenttextures.com/patterns/soft-circle-scales.png'); Add a fun pattern */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
-    padding: 20px;
     box-sizing: border-box;
 }
 
@@ -69,23 +68,26 @@
     text-align: center; /* Center the title text */
 }
 
+.image-container{
+    text-align: center;
+}
+
 .image-container img {
-    max-width: 90%;
-    max-height: 60vh;
-    object-fit: contain;
-    margin-bottom: 20px;
-    border: 5px solid #ADD8E6; /* Light Blue border */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 70%;
+    height: auto;
+    display: inline-block;
 }
 
 .button-container {
     display: flex;
     justify-content: space-between; /* Space buttons evenly */
     width: 100%; /* Full width of the container */
-    margin-top: 20px; /* Add spacing above the buttons */
+    margin-top: 10px; /* Add spacing above the buttons */
 }
 
+.button-test-background{
+    background-color: cornflowerblue;
+}
 
 .button:hover {
     background-color: #007BFF; /* Change background color on hover */
@@ -113,7 +115,7 @@
     max-width: 50%; /* Ensure each button is no more than 50% of the container width */
     margin: 0 10px; /* Add some spacing between the buttons */
     padding: 10px 20px; /* Add padding for better button size */
-    font-size: 1.2rem; /* Adjust the font size */
+    font-size: 1rem; /* Adjust the font size */
     text-align: center; /* Center the text inside the button */
     text-transform: uppercase; /* Make the text uppercase */
     border: 3px solid transparent; /* Add a border (transparent by default) */
@@ -273,3 +275,49 @@ h1 {
 .header h1 {
     animation: bounce 2s infinite; /* Apply bounce animation */
 }
+
+.italics {
+    font-style: italic;
+}
+
+.actions{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom)); /* iOS safe area */
+    background: blanchedalmond;
+    box-shadow: 0 -6px 16px rgba(0,0,0,0.08);
+    z-index: 100;
+    display: grid;   /* stack rows */
+    gap: 12px;
+}
+
+/* Center the first row of buttons */
+.actions .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  /* Make the second row take full width */
+  .actions .button-container--full .button-fullwidth {
+    display: block;      /* block so width applies */
+    width: 100%;
+    text-align: center;
+    text-decoration: none; /* remove underline for anchors */
+ }
+
+
+ .actions .button-container--full .button-test-background {
+    background-color: #fd4d0d;   /* pick your color */
+    color: #fff;
+    border: 1px solid grey;
+  }
+  
+  /* Hover/active states */
+  .actions .button-container--full .button-test-background:hover {
+    background-color: #0b5ed7;
+    border-color: #0b5ed7;
+  }
