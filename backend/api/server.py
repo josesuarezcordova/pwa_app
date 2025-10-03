@@ -2,20 +2,36 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 import numpy as np
+from pathlib import Path
+
+ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://localhost:9000",
+    "http://127.0.0.1:9000",
+    "http://localhost:9001",
+    "http://127.0.0.1:9001",
+    "https://josesuarezcordova.github.io",
+]
+
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:9000"}}) # Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": ALLOWED_ORIGINS }}) # Enable CORS for all routes
 
-# Load the trained model and label encoder
-model = joblib.load("../models/feedback_model.pkl")
-encoder = joblib.load("../models/label_encoder.pkl")
+# Load the trained model and label encoder using file-relative paths
+BASE_DIR = Path(__file__).resolve().parents[1]
+MODELS_DIR = BASE_DIR / "models"
+model = joblib.load(MODELS_DIR / "feedback_model.pkl")
+encoder = joblib.load(MODELS_DIR / "label_encoder.pkl")
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['POST', 'OPTIONS'])
 def predict():
+    if request.method == 'OPTIONS':
+        return ("", 204)
     try:
         # Log the incoming request data
         print("Incoming request data:", request.json)
-        data = request.json
+        data = request.get_json(force=True)
         new_features = np.array(data['features']).reshape(1, -1)
         
         # Log the reshaped features
@@ -28,13 +44,6 @@ def predict():
         return jsonify({'label': decoded_label[0]})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:9000')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    return response
     
 if __name__ == '__main__':
     app.run(debug=True)

@@ -2,35 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/App.css';
-import LoadComponent from './components/LoadComponent';
+// import LoadComponent from './components/LoadComponent';
 
-
+const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/+$/, ''); // Remove trailing slash
 
-// Unregister any existing service workers (for debugging purposes)
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach((registration) => registration.unregister());
-  });
+//In development , ensure no SW is intercepting requests
+if('serviceWorker' in navigator && isLocalhost) {
+  navigator.serviceWorker.getRegistrations().then((regs) => regs.forEach((r) => r.unregister()));
+  console.log('Unregistered existing service workers on localhost for development purposes.');
 }
 
-const serviceWorkerPath = `${publicUrl}/service-worker.js`;
-console.log('Service Worker Path:', serviceWorkerPath);
-
-// Register the service worker for PWA functionality
-if('serviceWorker' in navigator) {
-  navigator.serviceWorker.register(serviceWorkerPath)
-    .then((registration) => {
-        console.log('Service Worker registered with scope:', registration.scope);
-    })
-    .catch((error) => {
-        console.error('Service Worker registration failed:', error);
-    });
-  }else{
-    console.log('Service Workers are not supported in this browser.');
-  }
-
-console.log('Rendering ExampleComponent...');
+// In production, register the service worker using a relative URL
+if('serviceWorker' in navigator && !isLocalhost) {
+  const swUrl = new URL('./service-worker.js', window.location.href).toString();
+  navigator.serviceWorker
+  .register(swUrl)
+  .then((registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
+  })
+  .catch((error) => {
+      console.error('Service Worker registration failed:', error);
+  }); 
+}
 
 const rootElement = document.getElementById('root');
 const root = ReactDOM.createRoot(rootElement);
