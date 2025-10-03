@@ -1,21 +1,14 @@
 {
   "name": "My PWA Project + ML",
   "short_name": "PWA",
-  "start_url": "https://josesuarezcordova.github.io/pwa_app/",
+  "start_url": ".",
+  "scope" : ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "description": "A Progressive Web App designed to gather labeled data for AI training.",
   "icons": [
-    {
-      "src": "icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "./icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
