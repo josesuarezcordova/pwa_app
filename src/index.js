@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/App.css';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 // import LoadComponent from './components/LoadComponent';
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
@@ -27,10 +28,11 @@ if('serviceWorker' in navigator && !isLocalhost) {
 }
 
 const rootElement = document.getElementById('root');
-const root = ReactDOM.createRoot(rootElement);
+const Router = isLocalhost ? BrowserRouter : HashRouter;
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
