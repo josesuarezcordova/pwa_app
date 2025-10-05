@@ -13,11 +13,13 @@ const PredictionComponent = () => {
     const [showModal, setShowModal] = useState(false);
     
     const images = [
-        { src: `${publicUrl}/images/test/test_1.jpg`},
+        { src: `${publicUrl}/images/test/test_1.png`},
         { src: `${publicUrl}/images/test/test_2.png`},
         { src: `${publicUrl}/images/test/test_3.png`},
         { src: `${publicUrl}/images/test/test_4.png`},
         { src: `${publicUrl}/images/test/test_5.png`},
+        { src: `${publicUrl}/images/test/test_6.png`},
+        { src: `${publicUrl}/images/test/test_7.png`},
     ];
 
     const getRandomImage = () => {
@@ -45,7 +47,10 @@ const PredictionComponent = () => {
 
             console.log("Extracted Features:", flattenedFeatures.arraySync()); // Log the features
 
-            const response = await fetch('http://127.0.0.1:5000/predict', {
+            // const API_BASE_URL = "http://192.168.0.27:5000";
+            const API_BASE_URL = "https://530e0fff0bbf.ngrok-free.app";
+
+            const response = await fetch(`${API_BASE_URL}/predict`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
