@@ -199,10 +199,7 @@ const LoadComponent = () => {
     return (
         <div className="background-container">
             <div className="header">
-                <h1 className='title'>I want to learn</h1>
-            </div>
-            <div className="subTitle">
-                <h2>What is this</h2>
+                <h1 className='title'>What is this</h1>
             </div>
             <div className="image-container">
                 {currentImage && <img src={currentImage.src} alt="Random" />}
@@ -213,7 +210,7 @@ const LoadComponent = () => {
                     <button className="button" onClick={() => handleSelection('apple')} disabled={isLoading}>Apple</button>
                 </div>
                 <div className="button-container button-container--full">
-                    <Link to="/predict" className="button button-test-background button-fullwidth">Test me</Link>
+                <Link to="/predict" className="button button-test-background button-fullwidth">Test me</Link>
                 </div>
             </div>     
 

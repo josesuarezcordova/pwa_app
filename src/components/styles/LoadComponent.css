@@ -13,12 +13,12 @@
 
 .header h1::before {
     content: "📚"; /* Add a book emoji or icon */
-    margin-right: 10px; /* Add spacing between the icon and text */
+    margin-right: 5px; /* Add spacing between the icon and text */
 }
 
-.subTitle h2::after {
+.header h1::after {
     content: "❓"; /* Add a question mark emoji or icon */
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .header h1, .subTitle h2 {
@@ -41,10 +41,15 @@
 
 .subTitle {
     text-align: center; /* Center the text horizontally */
-    margin-top: 80px; /* Add spacing below the header */
+    margin-top: 5px; /* Add spacing below the header */
     font-size: 1.5rem; /* Adjust the font size */
     font-family: 'Comic Sans MS', 'Poppins', sans-serif; /* Playful font */
     color: #666; /* Optional: Set a lighter text color */
+}
+
+h1, h2{
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
 }
 
 .background-container {

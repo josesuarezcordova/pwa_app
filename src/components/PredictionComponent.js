@@ -48,7 +48,7 @@ const PredictionComponent = () => {
             console.log("Extracted Features:", flattenedFeatures.arraySync()); // Log the features
 
             // const API_BASE_URL = "http://192.168.0.27:5000";
-            const API_BASE_URL = "https://530e0fff0bbf.ngrok-free.app";
+            const API_BASE_URL = "https://1d246a1ef4c0.ngrok-free.app";
 
             const response = await fetch(`${API_BASE_URL}/predict`, {
                 method: 'POST',

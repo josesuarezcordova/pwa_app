@@ -12,7 +12,9 @@ ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000",
     "http://localhost:9001",
     "http://127.0.0.1:9001",
-    "https://josesuarezcordova.github.io",
+    "https://josesuarezcordova.github.io",  # GitHub Pages URL
+    "http://localhost:3000",
+    "http://192.168.1.101:3000",
 ]
 
 
