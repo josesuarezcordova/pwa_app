@@ -209,9 +209,9 @@ const LoadComponent = () => {
                     <button className="button" onClick={() => handleSelection('pear')} disabled={isLoading}>Pear</button>
                     <button className="button" onClick={() => handleSelection('apple')} disabled={isLoading}>Apple</button>
                 </div>
-                <div className="button-container button-container--full">
+                {/* <div className="button-container button-container--full">
                 <Link to="/predict" className="button button-test-background button-fullwidth">Test me</Link>
-                </div>
+                </div> */}
             </div>     
 
         {/* Loading animation */}
