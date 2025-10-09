@@ -1,0 +1,35 @@
+.app-header {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Space out logo, title, and menu */
+    height: 60px; /* Header height */
+    background-color: #ffffff; /* Background color */
+    padding: 0 20px; /* Add horizontal padding */
+    border-bottom: 1px solid #ddd; /* Optional: Add a subtle border for separation */
+}
+
+.app-icon {
+    width: 60px; /* Set logo width */
+    height: 60px; /* Set logo height */
+}
+
+.app-title {
+    flex-grow: 1; /* Allow the title to take up remaining space */
+    text-align: center; /* Center the title horizontally */
+    font-size: 18px; /* Adjust font size for mobile */
+    font-weight: bold; /* Make the title bold */
+    text-transform: uppercase; /* Convert text to uppercase */
+    color: #000000; /* Set a professional black color */
+    margin: 0; /* Remove default margin */
+}
+
+.hamburger-menu {
+    display: flex;
+    flex-direction: column; /* Stack menu bars vertically */
+    justify-content: space-between; /* Space out menu bars */
+    width: 30px; /* Width of the hamburger menu */
+    height: 20px; /* Height of the hamburger menu */
+    background: none; /* Remove default button background */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor to pointer */
+}

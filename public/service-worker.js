@@ -21,15 +21,6 @@ self.addEventListener('install', (event) => {
     })());
   });
 
-// '/',
-// '/index.html',
-// '/manifest.json',
-// '/styles/App.css',
-// '/src/index.js',
-// '/src/App.js',
-// '/src/components/LoadComponent.js',
-// '/src/components/PredictionComponent.js',
-
 self.addEventListener('activate', (event) => {
     event.waitUntil((async () => {
       const keys = await caches.keys();

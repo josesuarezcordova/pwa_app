@@ -1,0 +1,23 @@
+.splash-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #ffffff; /* Match the background color in manifest.json */
+  }
+  
+  .splash-icon {
+    width: 150px; /* Adjust the size of the image */
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .splash-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #333333; /* Dark text color for contrast */
+    text-align: center;
+    margin: 0;
+  }

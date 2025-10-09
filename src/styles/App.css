@@ -26,3 +26,13 @@ h1 {
 .button:hover {
     background-color: #0056b3;
 }
+
+img {
+    width: 100%; /* This can cause images to stretch */
+    height: auto;
+}
+
+div {
+    margin: 0; /* This can override component-specific margins */
+    padding: 0;
+}

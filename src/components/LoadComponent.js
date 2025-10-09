@@ -62,11 +62,6 @@ const getFeedbackCount = () => {
 };
 
 const LoadComponent = () => {
-    // const navigate = useNavigate(); // Initialize the navigate function
-
-    // const handleNavigateToPredict = () => {
-    //     navigate('/predict'); // Navigate to the PredictionComponent
-    // };
     const location = useLocation();
     console.log('Current location:', location.pathname);
 
@@ -197,10 +192,7 @@ const LoadComponent = () => {
     }, []);
 
     return (
-        <div className="background-container">
-            <div className="header">
-                <h1 className='title'>What is this</h1>
-            </div>
+        <div className="background-container">           
             <div className="image-container">
                 {currentImage && <img src={currentImage.src} alt="Random" />}
             </div>
@@ -209,9 +201,9 @@ const LoadComponent = () => {
                     <button className="button" onClick={() => handleSelection('pear')} disabled={isLoading}>Pear</button>
                     <button className="button" onClick={() => handleSelection('apple')} disabled={isLoading}>Apple</button>
                 </div>
-                {/* <div className="button-container button-container--full">
-                <Link to="/predict" className="button button-test-background button-fullwidth">Test me</Link>
-                </div> */}
+                <div className="button-container button-container--full">
+                    <Link to="/predict" className="button button-test-background button-fullwidth">Test me</Link>
+                </div>
             </div>     
 
         {/* Loading animation */}

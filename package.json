@@ -18,6 +18,8 @@
   "author": "Jsuarez",
   "license": "MIT",
   "dependencies": {
+    "@capacitor/cli": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
     "@firebase/firestore": "^4.9.2",
     "@tensorflow-models/mobilenet": "^2.1.1",
     "@tensorflow/tfjs": "^4.22.0",

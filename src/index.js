@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/App.css';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
-// import LoadComponent from './components/LoadComponent';
+import { BrowserRouter } from 'react-router-dom';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/+$/, ''); // Remove trailing slash
 
 //In development , ensure no SW is intercepting requests
 if('serviceWorker' in navigator && isLocalhost) {
@@ -27,8 +26,8 @@ if('serviceWorker' in navigator && !isLocalhost) {
   }); 
 }
 
-const rootElement = document.getElementById('root');
-const Router = isLocalhost ? BrowserRouter : HashRouter;
+// const rootElement = document.getElementById('root');
+// const Router = isLocalhost ? BrowserRouter : HashRouter;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -36,3 +35,9 @@ root.render(
       <App />
   </React.StrictMode>
 );
+
+// Register the service worker for offline capabilities and faster load times
+// This will allow the app to work offline and load faster on subsequent visits
+// However, it also means that developers (and users) will only see deployed updates on subsequent visits to a page, after all the existing tabs open on the page have been closed, since previously cached resources are updated in the background.
+// To learn more about the benefits of this model and instructions on how to opt-in, read https://cra.link/PWA
+serviceWorkerRegistration.register();

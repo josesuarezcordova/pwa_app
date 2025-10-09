@@ -1,14 +1,10 @@
 .header {
-    position: fixed; /* Fix the header at the top of the screen */
-    top: 0; /* Align it to the top */
-    left: 0; /* Align it to the left */
-    width: 100%; /* Make the header span the full width of the screen */
-    background-color: #ADD8E6; /* Light Blue for a kid-friendly look */
-    padding: 15px 0; /* Add vertical padding */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
-    z-index: 1000; /* Ensure it stays above other elements */
-    text-align: center; /* Center the text inside the header */
-    border-radius: 0 0 20px 20px; /* Rounded bottom corners */
+    position: relative;
+    width: 100%;
+    background-color: #f8f9fa; /* Light background for the header */
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+    z-index: 10;
 }
 
 .header h1::before {
@@ -54,7 +50,7 @@ h1, h2{
 
 .background-container {
     width: 100vw;
-    height: 100vh;
+    /* height: 100vh; */
     background: #fcfcfb; /* Light background color */
     /* background-image: url('https://www.transparenttextures.com/patterns/soft-circle-scales.png'); Add a fun pattern */
     display: flex;
@@ -73,14 +69,23 @@ h1, h2{
     text-align: center; /* Center the title text */
 }
 
-.image-container{
-    text-align: center;
+/* Ensure the image container is positioned directly below the header */
+.image-container {
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    /* height: auto;  */
+    background-color: transparent; /* Remove background color */
 }
 
+/* Ensure the image fits properly within the container */
 .image-container img {
-    max-width: 70%;
-    height: auto;
-    display: inline-block;
+    max-width: 100%; /* Ensure the image scales properly */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensure the image fits within the container */
+    display: block; /* Remove inline spacing issues */
 }
 
 .button-container {
@@ -292,7 +297,7 @@ h1 {
     bottom: 0;
     width: 100%;
     padding-bottom: calc(12px + env(safe-area-inset-bottom)); /* iOS safe area */
-    background: blanchedalmond;
+    background: #3b73a4;
     box-shadow: 0 -6px 16px rgba(0,0,0,0.08);
     z-index: 100;
     display: grid;   /* stack rows */
@@ -326,3 +331,25 @@ h1 {
     background-color: #0b5ed7;
     border-color: #0b5ed7;
   }
+
+  .load-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+    background-color: #f9f9f9; /* Light background for contrast */
+}
+
+.load-title {
+    font-size: 20px; /* Adjust font size for the title */
+    font-weight: bold; /* Make the title bold */
+    color: #333333; /* Set a dark gray color */
+    margin-bottom: 20px; /* Add spacing below the title */
+}
+
+.load-content {
+    font-size: 16px; /* Adjust font size for content */
+    color: #666666; /* Set a lighter gray color */
+    text-align: center; /* Center the text */
+}

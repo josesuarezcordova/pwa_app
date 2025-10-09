@@ -3,6 +3,12 @@ from flask_cors import CORS
 import joblib
 import numpy as np
 from pathlib import Path
+import configparser # Import configparser to read configuration files
+
+# Load allowed origins from a configuration file
+config = configparser.ConfigParser()
+config.read('ngrok_server.ini')
+ngrok_url = config['NGROK']['NGROK_SERVER']
 
 ALLOWED_ORIGINS = [
     "http://localhost:8080",
@@ -16,6 +22,7 @@ ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://192.168.1.101:3000",
     "https://api.jsdevcloud.uk", 
+    ngrok_url  # Add the ngrok URL from the config file
 ]
 
 
