@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import './styles/PredictionComponent.css';
+import "../styles/App.css" // Reusing LoadComponent styles for modal
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
 import { b } from "../firebase";
@@ -90,8 +91,7 @@ const PredictionComponent = () => {
 
     return (
         <div className="prediction-screen">
-            <h2>Prediction Screen</h2>
-            <h3>Click on the image </h3>
+            <h3 className="splash-title">Click on the image</h3>
             {currentImage && (
                 <div className="image-container" onClick={handleImageClick}>
                     <img 
@@ -113,11 +113,12 @@ const PredictionComponent = () => {
                 {isLoading ? (
                     <>
                     <div className="loading-spinner"></div>
-                    <p>Loading model and predicting...</p>
+                    <p>Let me think </p> 
+                    <img className="app-icon logo_animation" src="images/assets/whatisthis_logo2.png"/>
                     </>
                 ) : (
                     <>
-                    <p className="prediction-result">Predicted Label: {predictedLabel}</p>
+                    <p className="prediction-result">This is a {predictedLabel}</p>
                     <button className="button" onClick={handleModalOk}>Ok</button>
                     </>
                 )}

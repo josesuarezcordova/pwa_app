@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/App.css';
-import { BrowserRouter } from 'react-router-dom';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 
@@ -26,13 +26,14 @@ if('serviceWorker' in navigator && !isLocalhost) {
   }); 
 }
 
-// const rootElement = document.getElementById('root');
-// const Router = isLocalhost ? BrowserRouter : HashRouter;
-
+const basename = process.env.PUBLIC_URL || '/';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
+    <BrowserRouter basename={basename}>
       <App />
+    </BrowserRouter>       
   </React.StrictMode>
 );
 

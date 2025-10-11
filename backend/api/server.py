@@ -44,7 +44,7 @@ def predict():
         response.headers.add("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
         return response, 204
-        return ("", 204)
+    
     try:
         # Log the incoming request data
         print("Incoming request data:", request.json)
@@ -67,4 +67,4 @@ def predict():
         return response, 500
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True, threaded=True)

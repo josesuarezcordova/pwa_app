@@ -36,3 +36,9 @@ div {
     margin: 0; /* This can override component-specific margins */
     padding: 0;
 }
+
+.logo_animation{
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
