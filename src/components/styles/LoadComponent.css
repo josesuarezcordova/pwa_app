@@ -71,13 +71,10 @@ h1, h2{
 
 /* Ensure the image container is positioned directly below the header */
 .image-container {
-    margin: 0; /* Remove margin */
-    padding: 0; /* Remove padding */
+    position: relative; /* ensure arrows position correctly */
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
     align-items: center;
-    /* height: auto;  */
-    background-color: transparent; /* Remove background color */
 }
 
 /* Ensure the image fits properly within the container */
@@ -353,3 +350,48 @@ h1 {
     color: #666666; /* Set a lighter gray color */
     text-align: center; /* Center the text */
 }
+
+/* Overlay arrows */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    font-size: 36px;
+    line-height: 48px;
+    text-align: center;
+    background: rgba(0,0,0,0.35);
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+    user-select: none;
+    transition: background .2s;
+  }
+  
+  .nav-arrow:disabled {
+    opacity: .5;
+    cursor: default;
+  }
+  
+  .nav-arrow:hover:not(:disabled),
+  .nav-arrow:focus-visible {
+    background: rgba(0,0,0,0.55);
+    outline: none;
+  }
+  
+  .nav-arrow--left { left: 8px; }
+  .nav-arrow--right { right: 8px; }
+  
+  /* Optional larger clickable area on touch */
+  @media (pointer: coarse) {
+    .nav-arrow {
+      width: 56px;
+      height: 56px;
+      font-size: 42px;
+      line-height: 56px;
+    }
+  }
+  /* ...existing code... */

@@ -4,7 +4,7 @@ import "./styles/HeaderComponent.css"
 const HeaderComponent = () => {
     return (
         <header className="app-header">
-            <img src={`${process.env.PUBLIC_URL}/icons/whatisthis_icon.gif`} alt="App Icon" className="app-icon" />
+            <img src={`${process.env.PUBLIC_URL}icons/whatisthis_icon.gif`} alt="App Icon" className="app-icon" />
             <h1 className="app-title">What is this?</h1>
         </header>
     );

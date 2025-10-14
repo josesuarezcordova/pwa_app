@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
+const { type } = require('os');
+const { assert } = require('console');
 
 module.exports = (env= {}) => {
 
@@ -16,7 +18,8 @@ module.exports = (env= {}) => {
             path: path.resolve(__dirname, 'dist'),
             filename: 'bundle.js',
             publicPath: isProduction ? publicPathProd : '/', // Use relative path in production for SW to work correctly
-            clean : true // Clean the output directory before emitting
+            clean : true, // Clean the output directory before emitting
+            assetModuleFilename: 'static/media/[name][ext]' // Output images to 'images' folder
         },        
         plugins:[
             new Dotenv({
@@ -48,6 +51,10 @@ module.exports = (env= {}) => {
                 {
                     test: /\.css$/,
                     use: ['style-loader', 'css-loader']
+                },
+                { 
+                    test: /\.(png|jpe?g|gif|svg)$/i,
+                    type: 'asset/resource'
                 }
             ]
         },

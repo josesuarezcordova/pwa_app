@@ -47,9 +47,7 @@ const PredictionComponent = () => {
             const flattenedFeatures = features.flatten(); // Flatten the tensor to 1D
 
             console.log("Extracted Features:", flattenedFeatures.arraySync()); // Log the features
-
-            // // const API_BASE_URL = "http://192.168.0.27:5000";
-            // const API_BASE_URL = "https://api.jsdevcloud.uk";
+  
             const API_BASE_URL = "https://778ce4c9a5b1.ngrok-free.app"
 
             const response = await fetch(`${API_BASE_URL}/predict`, {

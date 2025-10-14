@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import './styles/App.css';
-import { BrowserRouter, Routes, Route  } from 'react-router-dom';
+import { BrowserRouter, HashRouter,Routes, Route } from 'react-router-dom';
 import LoadComponent from './components/LoadComponent';
 import PredictionComponent from './components/PredictionComponent';
 import SplashComponent from './components/SplashComponent';
@@ -20,7 +20,7 @@ function App() {
         return () => clearTimeout(timer);
     }, []);
     return (
-        <BrowserRouter>
+        <Router>
             {showSplash ? (
                 <SplashComponent />
             ) : ( 
@@ -32,7 +32,7 @@ function App() {
                     </Routes>
                 </>
             )}             
-        </BrowserRouter>
+        </Router>
     );
 }
 

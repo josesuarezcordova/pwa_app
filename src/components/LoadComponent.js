@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './styles/LoadComponent.css';
 // import { useNavigate } from 'react-router-dom';
 import {collection, addDoc, getDocs } from 'firebase/firestore';
@@ -61,44 +61,69 @@ const getFeedbackCount = () => {
   return parseInt(localStorage.getItem('feedbackCount'), 10) || 0;
 };
 
+const importTrainImages = () => {
+    const context = require.context('../assets/train', false, /\.(png|jpe?g|svg)$/);
+    return context.keys().map(k => { 
+        const mod= context(k);
+        return { src: mod.default || mod }; 
+    });
+};
+
 const LoadComponent = () => {
-    const location = useLocation();
-    console.log('Current location:', location.pathname);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [feedbackCount, setFeedbackCount] = useState(0);
     const [modalMessage, setModalMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [currentImage, setCurrentImage] = useState(null);
+    // const [currentImage, setCurrentImage] = useState(null);
+    const allImages = useRef(importTrainImages());
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const currentImage = allImages.current[currentIndex];
     
-    // Array of image paths
-    const images = [
-        { src: `${publicUrl}/images/train/image1.png` },
-        { src: `${publicUrl}/images/train/image2.png` },
-        { src: `${publicUrl}/images/train/image3.png` },
-        { src: `${publicUrl}/images/train/image4.png` },
-        { src: `${publicUrl}/images/train/image5.png` },
-        { src: `${publicUrl}/images/train/image6.png` },
-        { src: `${publicUrl}/images/train/image7.png` },
-        { src: `${publicUrl}/images/train/image8.png` },
-        { src: `${publicUrl}/images/train/image9.png` },
-        { src: `${publicUrl}/images/train/image10.png` },
-        { src: `${publicUrl}/images/train/image11.png` },
-        { src: `${publicUrl}/images/train/image12.png` },
-        { src: `${publicUrl}/images/train/image13.png` },
-        { src: `${publicUrl}/images/train/image14.png` },
-    ];
+    // Swipe detection
+    const touchStartX = useRef(null);
+    const SWIPE_THRESHOLD = 40;
 
-    const getRandomImage = () => {
-        return images[Math.floor(Math.random() * images.length)];
+    const nextImage = () => {
+        setCurrentIndex(i => (i + 1) % allImages.current.length);
+    }
+    const prevImage = () => {
+        setCurrentIndex(i => (i - 1 + allImages.current.length) % allImages.current.length);
+    }
+    const handleTouchStart = (e) => {
+        touchStartX.current = e.changedTouches[0].clientX;
     };
+    const handleTouchEnd = (e) => {
+        if(touchStartX.current !== null) return;
+        const delta = e.changedTouches[0].clientX - touchStartX.current;
+        if (delta > SWIPE_THRESHOLD) {
+            prevImage();
+        } else if (delta < -SWIPE_THRESHOLD) {
+            nextImage();
+        }
+        touchStartX.current = null;
+    }
+
+    // const getRandomImage = () => {
+    //     return images[Math.floor(Math.random() * images.length)];
+    // };
 
      // Initialize the current image when the component mounts
      useEffect(() => {
-        setCurrentImage(getRandomImage());
-        testFirestoreConnection();
+        // setCurrentImage(getRandomImage());
+        // testFirestoreConnection();
+        const onKey = (e) => {
+            if(e.key === 'ArrowLeft') prevImage();
+            if (e.key === 'ArrowRight') nextImage();
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
     }, []);
 
+    useEffect(() => {
+        testFirestoreConnection();
+    }, []);
+    
     // Function to save feedback to Firestore
     const saveFeedbackToFirestore = async (image, userLabel) => {
         try {
@@ -183,7 +208,8 @@ const LoadComponent = () => {
     const closeModal = () => {
         setIsModalOpen(false);
         // Reload the page to show a new random image
-        setCurrentImage(getRandomImage()); //Update the image after closing the modal
+        // setCurrentImage(getRandomImage()); //Update the image after closing the modal
+        nextImage();
     }
 
     // Test Firestore connection on component mount
@@ -193,14 +219,35 @@ const LoadComponent = () => {
 
     return (
         <div className="background-container">           
-            <div className="image-container">
-                {currentImage && <img src={currentImage.src} alt="Random" />}
+            <div className="image-container"
+                 onTouchStart={handleTouchStart}
+                 onTouchEnd={handleTouchEnd}
+            >   
+                {currentImage && <img src={currentImage.src} alt={`Train ${currentIndex+1}`} />}
+
+                {/* Overlay navigation arrows */}
+                <button
+                  type="button"
+                  className="nav-arrow nav-arrow--left"
+                  onClick={prevImage}
+                  aria-label="Previous image"
+                  disabled={isLoading}
+                >&lsaquo;</button>
+                <button
+                  type="button"
+                  className="nav-arrow nav-arrow--right"
+                  onClick={nextImage}
+                  aria-label="Next image"
+                  disabled={isLoading}
+                >&rsaquo;</button>
+            
             </div>
             <div className="actions">
                 <div className="button-container">
                     <button className="button" onClick={() => handleSelection('pear')} disabled={isLoading}>Pear</button>
                     <button className="button" onClick={() => handleSelection('apple')} disabled={isLoading}>Apple</button>
                 </div>
+
                 <div className="button-container button-container--full">
                     <Link to="/predict" className="button button-test-background button-fullwidth">Test me</Link>
                 </div>

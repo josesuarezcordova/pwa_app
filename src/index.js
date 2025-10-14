@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/App.css';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+console.log('Enviroment loaded :', process.env);
 
 //In development , ensure no SW is intercepting requests
 if('serviceWorker' in navigator && isLocalhost) {
@@ -15,7 +17,7 @@ if('serviceWorker' in navigator && isLocalhost) {
 
 // In production, register the service worker using a relative URL
 if('serviceWorker' in navigator && !isLocalhost) {
-  const swUrl = new URL('./service-worker.js', window.location.href).toString();
+  const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
   navigator.serviceWorker
   .register(swUrl)
   .then((registration) => {
@@ -31,9 +33,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename={basename}>
-      <App />
-    </BrowserRouter>       
+    <App />
   </React.StrictMode>
 );
 
