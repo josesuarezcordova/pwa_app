@@ -16,10 +16,10 @@ module.exports = (env= {}) => {
         entry: path.resolve(__dirname, 'src' , 'index.js'),
         output: {
             path: path.resolve(__dirname, 'dist'),
-            filename: 'bundle.js',
+            filename: 'static/js/bundle.[contenthash:8].js',
             publicPath: isProduction ? publicPathProd : '/', // Use relative path in production for SW to work correctly
             clean : true, // Clean the output directory before emitting
-            assetModuleFilename: 'static/media/[name][ext]' // Output images to 'images' folder
+            assetModuleFilename: 'static/media/[name].[hash][ext]' // Output images to 'images' folder
         },        
         plugins:[
             new Dotenv({
