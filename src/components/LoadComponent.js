@@ -5,7 +5,7 @@ import {collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 // Function to extract image features using MobileNet
@@ -79,6 +79,7 @@ const LoadComponent = () => {
     const allImages = useRef(importTrainImages());
     const [currentIndex, setCurrentIndex] = useState(0);
     const currentImage = allImages.current[currentIndex];
+    const navigate = useNavigate();
     
     // Swipe detection
     const touchStartX = useRef(null);
@@ -103,15 +104,9 @@ const LoadComponent = () => {
         }
         touchStartX.current = null;
     }
-
-    // const getRandomImage = () => {
-    //     return images[Math.floor(Math.random() * images.length)];
-    // };
-
+  
      // Initialize the current image when the component mounts
      useEffect(() => {
-        // setCurrentImage(getRandomImage());
-        // testFirestoreConnection();
         const onKey = (e) => {
             if(e.key === 'ArrowLeft') prevImage();
             if (e.key === 'ArrowRight') nextImage();
@@ -217,6 +212,10 @@ const LoadComponent = () => {
         testFirestoreConnection();
     }, []);
 
+    const onCameraClick = () => {
+        navigate('/camera');
+    };
+
     return (
         <div className="background-container">           
             <div className="image-container"
@@ -249,7 +248,16 @@ const LoadComponent = () => {
                 </div>
 
                 <div className="button-container button-container--full">
-                    <Link to="/predict" className="button button-test-background button-fullwidth">Test me</Link>
+                    <button
+                        type='button'
+                        className='icon-button'
+                        onClick={onCameraClick}
+                        disabled={isLoading}
+                        aria-label="Take a Picture"
+                        title = "Take a Picture"
+                    >
+                        <img src={`${publicUrl}/icons/camera.svg`} alt="Statistics"/>
+                    </button>
                 </div>
             </div>     
 

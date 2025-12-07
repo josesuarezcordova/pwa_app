@@ -1,0 +1,150 @@
+.camera-frame{
+    position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.camera-video{
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #000;
+    border-radius: 10px;
+    object-fit: contain; /* keeps letterboxing math valid */
+}
+
+.crop-overlay{
+    position: absolute;
+    z-index: 2;
+    border: 2px solid #00e0ff;
+    border-radius: 12px;
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.25);
+    pointer-events: none; /* decorative only */
+  }
+
+.crop-box{
+    position: absolute;
+    z-index : 2;
+    border: 2px dashed #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+    cursor: move;
+    touch-action: none;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);  /* CHANGED: was transparent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+  pointer-events: auto;
+}
+
+.modal ,
+.label-modal {
+  color: #111;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.model-title,
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 14px 16px 0 16px;
+}
+
+.modal-body {
+  padding: 12px 16px;
+  overflow-y: auto;
+  line-height: 1.4;
+}
+
+.modal-field{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px 0 14px 0;
+}
+
+.modal-field input[type="text"],
+.modal-newlabel input{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  color: #111;
+}
+
+  /* Radio options */
+  .modal-options {
+    display: flex;
+    flex-direction: column;    /* stack radios vertically */
+    gap: 8px;
+    margin: 6px 0 8px 0;
+  }
+
+  .modal-options label{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .modal-options input[type="radio"] {
+    transform: scale(1.1);
+  }
+
+  .modal-newlabel input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #1a1a1a;
+    color: #fff;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    position: sticky; /* keep buttons visible while scrolling */
+    bottom: 0;
+    padding: 12px 16px 8px;
+    margin-top: 12px;
+  }
+
+  /* Buttons (reuse your existing styles if you have them) */
+  .modal-actions .btn {
+    appearance: none;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .modal-actions .btn-primary {
+    background: #f1b300;       /* your yellow */
+    color: #111;
+  }
+  
+  .modal-actions .btn-secondary {
+    background: #e6e6e6;
+    color: #111;
+  }
+  
+  /* Ensure the page behind doesn’t force dark text layout inside the modal */
+  .modal *,
+  .label-modal * {
+    color: inherit;
+  }

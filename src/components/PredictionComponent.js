@@ -1,9 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState, useMemo, useCallback} from "react";
 import './styles/PredictionComponent.css';
 import "../styles/App.css" // Reusing LoadComponent styles for modal
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
-import { b } from "../firebase";
 
 const publicUrl = (process.env.PUBLIC_URL || '').replace(/\/+$/, ''); // Remove trailing slash
 
@@ -13,20 +12,29 @@ const PredictionComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     
-    const images = [
-        { src: `${publicUrl}/images/test/test_1.png`},
-        { src: `${publicUrl}/images/test/test_2.png`},
-        { src: `${publicUrl}/images/test/test_3.png`},
-        { src: `${publicUrl}/images/test/test_4.png`},
-        { src: `${publicUrl}/images/test/test_5.png`},
-        { src: `${publicUrl}/images/test/test_6.png`},
-        { src: `${publicUrl}/images/test/test_7.png`},
-    ];
+    const importTestImages = () => {
+        const context = require.context('../assets/test_images', false, /\.(png|jpe?g|svg)$/);
+        return context.keys().map(k => { 
+            const mod= context(k);
+            return { src: mod.default || mod }; 
+        });
+    };
+    
+    // Load image list only once
+    const images = useMemo(() => importTestImages(), []);
 
-    const getRandomImage = () => {
+    // Pick a random image from the list
+    const getRandomImage = useCallback(() => {
+        if(!Array.isArray(images) || images.length === 0) return null;
         const randomIndex = Math.floor(Math.random() * images.length);
         return images[randomIndex];
-    }
+    }, [images]);
+
+    // Set a random image on component mount
+    useEffect(() => {
+        const img = getRandomImage();
+        if (img) setCurrentImage(img);
+    }, [getRandomImage]);
 
     const handleImageClick = async () => { 
         try {
@@ -48,13 +56,13 @@ const PredictionComponent = () => {
 
             console.log("Extracted Features:", flattenedFeatures.arraySync()); // Log the features
   
-            const API_BASE_URL = "https://778ce4c9a5b1.ngrok-free.app"
+            // const API_BASE_URL = "https://09308f17d55c.ngrok-free.app"; // Replace with your actual API base URL
+
+            const API_BASE_URL = "http://127.0.0.1:5000"; // Replace with your actual API base URL
 
             const response = await fetch(`${API_BASE_URL}/predict`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ features: flattenedFeatures.arraySync() })
             });
 
@@ -72,10 +80,6 @@ const PredictionComponent = () => {
         }
     };
 
-    React.useEffect(() => {
-        setCurrentImage(getRandomImage());
-    }, []);
-
     const handleReload = () => {
         window.location.reload();
     }
@@ -89,6 +93,7 @@ const PredictionComponent = () => {
 
     return (
         <div className="prediction-screen">
+            
             <h3 className="splash-title">Click on the image</h3>
             {currentImage && (
                 <div className="image-container" onClick={handleImageClick}>

@@ -33,3 +33,54 @@
     border: none; /* Remove default button border */
     cursor: pointer; /* Change cursor to pointer */
 }
+
+
+.topbar{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* padding: 8px 12px; */
+    background: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.topbar_nav{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    width: 100%;
+    align-items: center;
+}
+
+.topbar_nav a.topbar_icon,
+.topbar_nav a.topbar_logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    min-height: 44px;
+}
+
+.topbar_nav img{
+    height: 24px;
+    width: 24px;
+}
+
+.topbar_logo img{
+    height: 32px;
+    width: auto;
+}
+
+.topbar_icon img{
+    height: 24px;
+    width: 24px;
+    display: block;
+    filter: grayscale(0.1);
+    transition: transform 120ms ease, filter 120ms ease, opacity 120ms ease;
+}
+
+.topbar_icon:hover img,
+.topbar_logo:hover img{
+    transform: scale(1.06);
+    filter: none;
+    opacity: 0.9;
+}

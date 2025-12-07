@@ -13,6 +13,7 @@ ngrok_url = config['NGROK']['NGROK_SERVER']
 ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:8081",
+    "http://192.168.0.16:8081",
     "http://127.0.0.1:8080",
     "http://localhost:9000",
     "http://127.0.0.1:9000",

@@ -5,6 +5,7 @@ import LoadComponent from './components/LoadComponent';
 import PredictionComponent from './components/PredictionComponent';
 import SplashComponent from './components/SplashComponent';
 import HeaderComponent from './components/HeaderComponent';
+import CameraComponent from './components/CameraComponent';
 
 const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
 const Router = isLocalhost ? BrowserRouter : HashRouter;
@@ -29,6 +30,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<LoadComponent />} />
                         <Route path="/predict" element={<PredictionComponent />} />
+                        <Route path="/camera" element={<CameraComponent />} />
                     </Routes>
                 </>
             )}             
